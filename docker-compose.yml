@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: postgres:14
+    container_name: soundflow-pg
+    env_file: .env
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d/
+    restart: on-failure

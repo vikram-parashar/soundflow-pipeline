@@ -71,3 +71,10 @@ CREATE TABLE silver.status_change_events (
     ingestion_ts timestamptz NOT NULL
 );
 
+CREATE INDEX ON silver.listen_events (event_ts, user_id);
+
+CREATE INDEX ON silver.page_view_events (event_ts, user_id);
+
+CREATE INDEX ON silver.auth_events (event_ts, user_id);
+
+CREATE INDEX ON silver.status_change_events (event_ts, user_id);

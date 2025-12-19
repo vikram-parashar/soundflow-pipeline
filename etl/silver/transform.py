@@ -3,6 +3,20 @@ import os
 import time
 
 
+def truncate_silver(conn):
+    sql = """
+    TRUNCATE TABLE
+        silver.auth_events,
+        silver.listen_events,
+        silver.page_view_events ,
+        silver.status_change_events 
+    RESTART IDENTITY;
+    """
+    with conn.cursor() as cur:
+        cur.execute(sql)
+    conn.commit()
+
+
 def transform_auth_events(conn):
     sql = """
     INSERT INTO silver.auth_events (
@@ -182,6 +196,7 @@ def transform_status_change_events(conn):
 
 
 def run_transforms(conn):
+    truncate_silver(conn)
     transform_auth_events(conn)
     transform_listen_events(conn)
     transform_page_view_events(conn)

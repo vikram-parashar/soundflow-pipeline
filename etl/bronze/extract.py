@@ -38,6 +38,8 @@ def get_pg_conn():
 
 
 def flush_batch(conn, sql, batch):
+    if len(batch) == 0:
+        return
     with conn.cursor() as cur:
         psycopg2.extras.execute_batch(
             cur,
@@ -263,9 +265,24 @@ def extract_listen_events(conn):
     print(f"inserted {insert_cnt} in bronze.listen_events")
 
 
+def truncate_bronze(conn):
+    sql = """
+    TRUNCATE TABLE
+        bronze.auth_events,
+        bronze.listen_events,
+        bronze.status_change_events,
+        bronze.page_view_events
+    RESTART IDENTITY;
+    """
+    with conn.cursor() as cur:
+        cur.execute(sql)
+    conn.commit()
+
+
 def main():
     conn = get_pg_conn()
     try:
+        truncate_bronze(conn)
         extract_auth_events(conn)
         extract_listen_events(conn)
         extract_status_change_events(conn)

@@ -1,3 +1,4 @@
+![Metabase Dashboard](/dashboard.png)
 # Soundflow
 
 **Soundflow** is an end-to-end **data engineering project** that simulates music streaming events, ingests them into PostgreSQL, processes them through a **Bronze → Silver → Gold ETL architecture**, and exposes analytics-ready datasets for visualization in Metabase.
